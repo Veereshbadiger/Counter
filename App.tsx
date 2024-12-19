@@ -1,118 +1,112 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const CounterApp = () => {
+  const [count, setCount] = useState(0);
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  // Function to increment count
+  const incrementCount = () => {
+    setCount(count + 1);
+  };
+  const decreementCount = () => {
+    setCount(count - 1);
+    if(count <= 0){
+      setCount(0);
+    }
+  };
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // Function to reset count on long press
+  const resetCount = () => {
+    setCount(0);
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.touchableContainer}
+        onPress={incrementCount}
+        onLongPress={resetCount}
+        delayLongPress={500} // Optional long press delay
+      >
+        <View style={[{alignItems: 'center'},{marginBottom: 20}]}>
+        <Text >New Group</Text>
+          <Text style={styles.subtitle}>New Counter</Text>
+          </View>
+        <View style={styles.innerContainer}>
+          
+          <Text style={styles.counter}>{count}</Text>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+      </TouchableOpacity>
 
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={incrementCount} style={styles.button}>
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => console.log('Menu Pressed')} style={styles.button}>
+          <Text style={styles.buttonText}>Menu</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => console.log('Settings Pressed')} style={styles.button}>
+          <Text style={styles.buttonText}>⚙</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={decreementCount} style={styles.button}>
+          <Text style={styles.buttonText}>-</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+// Styles
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: '#00a4de',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionTitle: {
+  touchableContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  innerContainer: {
+    alignItems: 'center',
+  },
+  title: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    color: '#fff',
   },
-  sectionDescription: {
-    marginTop: 8,
+  subtitle: {
     fontSize: 18,
-    fontWeight: '400',
+    color: '#fff',
   },
-  highlight: {
-    fontWeight: '700',
+  counter: {
+    fontSize: 100,
+    fontWeight: '200',
+    color: '#fff',
+    marginVertical: 20,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  button: {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    padding: 20,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 10,
+  },
+  buttonText: {
+    fontSize: 24,
+    color: 'white',
   },
 });
 
-export default App;
+export default CounterApp;
